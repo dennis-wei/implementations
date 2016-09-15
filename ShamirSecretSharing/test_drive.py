@@ -15,6 +15,7 @@ n = 5
 # Create random messages
 message = randint(message_space, size = num_samples)
 
+print "Constructing Shamir Scheme with t = {} and n = {}".format(t, n)
 print "MESSAGES ARE: {}".format(message)
 print ""
 
