@@ -1,3 +1,4 @@
+from __future__ import division
 from shamir_share import share, reconstruct
 from numpy.random import randint, choice
 from termcolor import colored
@@ -23,6 +24,7 @@ res = [share(m, t, n) for m in message]
 shares, p = zip(*res)
 
 print colored("NOW TESTING FOR SUCCESS", "cyan")
+count = 0
 for i in range(num_samples):
     print colored("Now testing message {}: {}".format(i+1, message[i]), "magenta")
     print "Message share is {} with prime {}".format(shares[i], p[i])
@@ -41,6 +43,7 @@ for i in range(num_samples):
     else:
         print colored("Reconstruction failed", "red")
     print ""
+
 
 print colored("NOW TESTING FOR FAILURE", "cyan")
 for i in range(num_samples):

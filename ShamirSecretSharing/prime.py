@@ -1,5 +1,5 @@
-MERSENNE_EXPONENTS = [7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279]
-pow_arr = [128]
+MERSENNE_EXPONENTS = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279]
+pow_arr = [3]
 
 def get_larger_prime(n):
     largest_prime = 0
