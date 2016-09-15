@@ -1,40 +1,63 @@
 from shamir_share import share, reconstruct
 from numpy.random import randint, choice
+from termcolor import colored
 
-message_space = 100
-message = randint(message_space, size = 5)
-print "messages are: "
-print message
+# Maximum message
+message_space = 10000
+# Number of messages to be created
+num_samples = 3
+# threshold
+t = 2
+# total shares
+n = 5
 
-res = [share(m, 3, 7) for m in message]
+# Create random messages
+message = randint(message_space, size = num_samples)
+
+print "MESSAGES ARE: {}".format(message)
+print ""
+
+# Produce shares for each message
+res = [share(m, t, n) for m in message]
+# Unpacks list(shares), list(primes) values into a list of (share, prime) tuples
 shares, p = zip(*res)
 
-print "NOW TESTING FOR SUCCESS"
-for i in range(5):
-    print "Now testing message {}".format(i+1)
+print colored("NOW TESTING FOR SUCCESS", "cyan")
+for i in range(num_samples):
+    print colored("Now testing message {}: {}".format(i+1, message[i]), "magenta")
     print "Message share is {} with prime {}".format(shares[i], p[i])
-    idx = choice(7, 3, replace=False)
+
+    # Get random sample of three shares
+    idx = choice(n, t, replace=False)
     sample = [shares[i][j] for j in idx]
+
+    print "Sample shares are {}".format(sample)
     res = int(reconstruct(sample, p[i]))
     print "Original message is {}".format(message[i])
     print "Reconstructed message is {}".format(res)
+
     if res == message[i]:
-        print "Message successfully retrieved"
+        print colored("Message successfully retrieved", "green")
     else:
-        print "Reconstruction failed"
+        print colored("Reconstruction failed", "red")
     print ""
 
-print "NOW TESTING FOR FAILURE"
-for i in range(5):
-    print "Now testing message {}".format(i+1)
-    print "Message share is {} with prime {}".format(shares[i], p[i])
-    idx = choice(7, 2, replace=False)
+print colored("NOW TESTING FOR FAILURE", "cyan")
+for i in range(num_samples):
+    print colored("Now testing message {}: {}".format(i+1, message[i]), "magenta")
+    print "Message shares are {} with prime {}".format(shares[i], p[i])
+
+    # Get random unqualified share set
+    idx = choice(n, t-1, replace=False)
     sample = [shares[i][j] for j in idx]
+
+    print "Sample shares are {}".format(sample)
     res = int(reconstruct(sample, p[i]))
     print "Original message is {}".format(message[i])
     print "Reconstructed message is {}".format(res)
+
     if res == message[i]:
-        print "Message successfully retrieved"
+        print colored("Message retrieved by luck", "red")
     else:
-        print "Reconstruction failed"
+        print colored("Yay, reconstruction failed!", "green")
     print ""
