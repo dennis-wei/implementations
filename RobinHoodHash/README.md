@@ -40,3 +40,6 @@ y = rh.delete('one')
 
 To run the test file from the command line, use the command  
 `python robin_hash_test.py`
+
+### Moving Forward
+There are definitely still ways to improve on this. As mentioned above, resizing has not been implemented, and would not be incredibly hard to do given Python's incredibly lenient implementation of arrays. Additionally, I may look into either some timing tests, perhaps comparing to Python's primative dictionary type, or some statistical analysis on probe length mean, varience, etc. for various data sets.
