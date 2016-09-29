@@ -59,33 +59,38 @@ def _get_random_string():
     return r_str
 
 print "\nRunning randomized experiments\n"
-rh = RobinHash(512)
-random_keys = []
-for i in range(1000):
-    key = _get_random_string()
-    value = _get_random_string()
-    assert rh.set(key, value) or rh.load() == 1
-    if random.random() < 0.3 and rh.load() != 1:
-        random_keys.append(key)
-    if random.random() < 0.05:
-        for key in random_keys:
-            assert rh.get(key)
-            if random.random() < 0.5:
-                assert rh.set(key, _get_random_string())
+NUM_EXPERIMENTS = 100
+for j in range(NUM_EXPERIMENTS):
+    rh = RobinHash(512)
+    random_keys = set()
+    for i in range(1000):
+        key = _get_random_string()
+        value = _get_random_string()
+        success = rh.set(key, value)
+        assert success or rh.load() == 1
+        if random.random() < 0.3 and success:
+            random_keys.add(key)
+        if random.random() < 0.05:
+            for key in random_keys:
                 assert rh.get(key)
-            else:
-                rh.delete(key)
-                assert not rh.get(key)
-        random_keys = []
-    if random.random() < .05:
-        rh.get(_get_random_string())
-    if random.random() < 0.1:
-        new_key = _get_random_string()
-        rh.delete(new_key)
-        if new_key in random_keys:
-            random_keys.remove(new_key)
-print "After experiments, load is: ", rh.load()
-print "Max Probe Distance is: ", rh.max_probe
-
+                if random.random() < 0.5:
+                    assert rh.set(key, _get_random_string())
+                    assert rh.get(key)
+                else:
+                    rh.delete(key)
+                    assert not rh.get(key)
+            random_keys = set()
+        if random.random() < .05:
+            rh.get(_get_random_string())
+        if random.random() < 0.1:
+            new_key = _get_random_string()
+            rh.delete(new_key)
+            if new_key in random_keys:
+                random_keys.remove(new_key)
+    print "{0:03d}/{1:d} | Max Probe: {2:03d} | Load Factor: {3:f}".format(
+                                                            j + 1,
+                                                            NUM_EXPERIMENTS,
+                                                            rh.max_probe,
+                                                            rh.load())
 
 print "All tests successful!"

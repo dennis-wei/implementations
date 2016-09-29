@@ -1,6 +1,7 @@
 # Robin Hood Hash Map
 
-This is a Hash Map I implemented for the KPCB Fellows application, Fall 2016
+This is a Hash Map I implemented for the KPCB Fellows application, Fall 2016.
+The code can additionally be found on Github [here](https://github.com/dennis-wei/implementations/tree/master/RobinHoodHash).
 
 ### Background
 Taking inspiration from the Rust Language, I decided to use a Robin Hood implementation. This implementation retains many of the benefits of simple linear probing (very low search, insertion, and deletion time given a good enough hashing algorithm) while improving on the actually time spent probing. The algorithm achieves this by greedily swapping elements during an insertion if the linear offset from an entry's original hash value is larger than that of the entry corresponding to the current index. What this accomplishes is very low mean probe length (indices iterated through to find an empty bucket), as inherited from traditional linear probing, as well as low variance on probe length due to the greedy swapping.

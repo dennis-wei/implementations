@@ -107,6 +107,7 @@ class RobinHash():
         Calls the function that gets both the hash index and the value, but
         only returns the value
         """
+
         return self.__get_idx_and_value(key)[1]
 
     def set(self, key, value):
@@ -124,6 +125,7 @@ class RobinHash():
                     This should only occur if the hash map is full
         """
         # First search for the key and override it if it is found
+
         idx = self.__get_idx_and_value(key)[0]
         if idx != None:
             self.bins[idx].value = value
@@ -239,6 +241,7 @@ class RobinHash():
                 tuple corresponding to the array index of the entry
                 and the value corresponding to the key
         """
+
         # Hash and get ideal no-collision bin
         hash_value = hash_function(key)
         init_idx = hash_value % self.num_bins
